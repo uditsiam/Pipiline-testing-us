@@ -13,5 +13,5 @@ steps:
 - task: PublishPipelineArtifact@1
   displayName: 'Publish index.html as a pipeline artifact'
   inputs:
-    targetPath: '$(Build.SourcesDirectory)/index.html' # Path to index.html in the repo
+    targetPath: '$(Build.SourcesDirectory)/content/index.html' # Path to index.html in the repo
     artifact: 'html_artifact' # Name of the artifact
