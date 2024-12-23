@@ -2,7 +2,7 @@ trigger:
 - main # Trigger the pipeline for changes in the `main` branch
 
 pool:
-  vmImage: 'ubuntu-latest' # Use an Ubuntu virtual machine for the build process
+  vmImage: 'windows-latest' # Use an Ubuntu virtual machine for the build process
 
 steps:
 # Step 1: Checkout the repository code
