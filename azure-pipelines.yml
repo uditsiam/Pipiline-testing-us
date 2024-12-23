@@ -1,45 +1,17 @@
 trigger:
-  branches:
-    include:
-      - main  # The branch that will trigger the pipeline, change if needed
+- main # Trigger the pipeline for changes in the `main` branch
 
 pool:
-  name: 'SelfHostedPool'  # Use your self-hosted agent pool
+  vmImage: 'ubuntu-latest' # Use an Ubuntu virtual machine for the build process
 
 steps:
-# Step 1: Checkout the code from GitHub or the repository
+# Step 1: Checkout the repository code
 - task: Checkout@1
-  displayName: 'Checkout Repository'
+  displayName: 'Checkout source code'
 
-# Step 2: (Optional) Install dependencies if you're using a build system like Node.js
-# For static HTML, this may not be necessary, but you can install dependencies here if required
-- script: |
-    echo "Installing dependencies..."
-    # Example: npm install if you're using Node.js or another build tool
-    # npm install
-  displayName: 'Install dependencies (if any)'
-
-# Step 3: Build your project (optional)
-# If you're using a build system (like Node.js or another frontend framework), you'd run the build here.
-# For static HTML, this can be skipped.
-- script: |
-    echo "Building project (if required)"
-    # Example: npm run build or other build commands, if applicable
-    # npm run build
-  displayName: 'Build Project'
-
-# Step 4: Publish/Deploy your index.html
-# This step will upload your index.html file to a location, or if you're hosting it on a web server, deploy it.
-- task: CopyFiles@2
+# Step 2: Publish the HTML file as an artifact
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish index.html as a pipeline artifact'
   inputs:
-    SourceFolder: '$(Build.SourcesDirectory)'  # The source folder for your repo
-    Contents: '**/index.html'  # The specific file you want to deploy
-    TargetFolder: '$(Build.ArtifactStagingDirectory)/web'  # Where to store the file
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    ArtifactName: 'web'  # The name of the artifact for this file
-    publishLocation: 'Container'
-
-# Step 5: (Optional) Deploy to a web server or a platform like Azure App Service, FTP, etc.
-# You can add a deploy step if you have an environment to deploy your HTML.
+    targetPath: '$(Build.SourcesDirectory)/index.html' # Path to index.html in the repo
+    artifact: 'html_artifact' # Name of the artifact
