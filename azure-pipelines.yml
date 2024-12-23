@@ -1,17 +1,19 @@
 trigger:
-- main # Trigger the pipeline for changes in the `main` branch
+- main # Trigger the pipeline on changes to the main branch
 
 pool:
-  vmImage: 'windows-latest' # Use an Ubuntu virtual machine for the build process
+  name: 'SelfHostedPool' # Name of your self-hosted agent pool
+  demands:
+  - Agent.OS -equals Windows_NT # Ensure the pipeline runs on a Windows agent
 
 steps:
-# Step 1: Checkout the repository code
+# Step 1: Checkout the repository
 - task: Checkout@1
   displayName: 'Checkout source code'
 
-# Step 2: Publish the HTML file as an artifact
+# Step 2: Publish the HTML file
 - task: PublishPipelineArtifact@1
   displayName: 'Publish index.html as a pipeline artifact'
   inputs:
-    targetPath: '$(Build.SourcesDirectory)/index.html' # Path to index.html in the repo
+    targetPath: '$(Build.SourcesDirectory)/index.html' # Path to index.html
     artifact: 'html_artifact' # Name of the artifact
