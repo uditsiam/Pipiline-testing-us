@@ -1,19 +1,17 @@
 trigger:
-- main # Trigger the pipeline on changes to the main branch
+- main
 
 pool:
-  name: 'SelfHostedPool' # Name of your self-hosted agent pool
-  demands:
-  - Agent.OS -equals Windows_NT # Ensure the pipeline runs on a Windows agent
+  name: 'SelfHostedPool' # Use the actual name of your self-hosted agent pool
 
 steps:
 # Step 1: Checkout the repository
-- task: Checkout@1
+- checkout: self
   displayName: 'Checkout source code'
 
 # Step 2: Publish the HTML file
 - task: PublishPipelineArtifact@1
   displayName: 'Publish index.html as a pipeline artifact'
   inputs:
-    targetPath: '$(Build.SourcesDirectory)/content/index.html'# Path to index.html
+    targetPath: '$(Build.SourcesDirectory)/index.html' # Path to index.html
     artifact: 'html_artifact' # Name of the artifact
